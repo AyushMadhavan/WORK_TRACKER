@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import { motion } from 'framer-motion';
 
 const AdminDashboard = () => {
@@ -17,7 +18,7 @@ const AdminDashboard = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
+            const res = await axios.get(`${API_URL}/users`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUsers(res.data);
@@ -29,7 +30,7 @@ const AdminDashboard = () => {
     const fetchTasksToSanction = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`, {
+            const res = await axios.get(`${API_URL}/tasks`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const pending = res.data.filter(t => t.status === 'completed' && t.adminStatus === 'pending');
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
     const handleSanction = async (taskId, status) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+            await axios.put(`${API_URL}/tasks/${taskId}`, {
                 adminStatus: status
             }, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -57,7 +58,7 @@ const AdminDashboard = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, {
+            await axios.post(`${API_URL}/tasks`, {
                 title, description, assignedTo
             }, {
                 headers: { Authorization: `Bearer ${token}` }

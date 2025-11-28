@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../config';
 import AdminDashboard from './AdminDashboard';
 import { motion } from 'framer-motion';
 
@@ -28,10 +29,10 @@ const Dashboard = () => {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
 
-            const attendanceRes = await axios.get(`${import.meta.env.VITE_API_URL}/attendance/status`, config);
+            const attendanceRes = await axios.get(`${API_URL}/attendance/status`, config);
             setAttendance(attendanceRes.data);
 
-            const tasksRes = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`, config);
+            const tasksRes = await axios.get(`${API_URL}/tasks`, config);
             setTasks(tasksRes.data);
         } catch (error) {
             console.error('Error fetching data', error);
@@ -44,7 +45,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/attendance/checkin`, {}, config);
+            const res = await axios.post(`${API_URL}/attendance/checkin`, {}, config);
             setAttendance(res.data);
         } catch (error) {
             alert(error.response?.data?.message || 'Check-in failed');
@@ -55,7 +56,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/attendance/checkout`, {}, config);
+            const res = await axios.post(`${API_URL}/attendance/checkout`, {}, config);
             setAttendance(res.data);
         } catch (error) {
             alert(error.response?.data?.message || 'Check-out failed');
@@ -72,7 +73,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+            await axios.put(`${API_URL}/tasks/${taskId}`, {
                 status: 'in-progress'
             }, config);
 
@@ -98,7 +99,7 @@ const Dashboard = () => {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
 
-            await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+            await axios.put(`${API_URL}/tasks/${taskId}`, {
                 timeLog: { startTime, endTime, duration },
                 status: 'in-progress'
             }, config);
@@ -116,7 +117,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const config = { headers: { Authorization: `Bearer ${token}` } };
-            await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${taskId}`, {
+            await axios.put(`${API_URL}/tasks/${taskId}`, {
                 status: 'completed'
             }, config);
             fetchData();
